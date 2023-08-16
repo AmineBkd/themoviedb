@@ -21,7 +21,8 @@
             android:clickable="true"
             android:focusable="true"
             android:scrollbars="vertical"
-            app:layoutManager="LinearLayoutManager" />
+            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+            app:spanCount="2"/>
 
     </FrameLayout>
 </layout>
