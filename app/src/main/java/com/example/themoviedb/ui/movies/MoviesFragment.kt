@@ -1,6 +1,7 @@
 package com.example.themoviedb.ui.movies
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +9,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.viewModels
 import com.example.themoviedb.data.Movie
 import com.example.themoviedb.databinding.FragmentMoviesBinding
+import com.example.themoviedb.ui.movies.adapter.MovieAdapter
 
 class MoviesFragment : Fragment() {
     private var _binding: FragmentMoviesBinding? = null
@@ -20,7 +22,9 @@ class MoviesFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentMoviesBinding.inflate(inflater, container, false)
+        binding.recyclerView.adapter = MovieAdapter(listOf<Movie>())
         binding.viewModel = viewModel
+
         return binding.root
     }
 
@@ -29,7 +33,15 @@ class MoviesFragment : Fragment() {
         viewModel.loadPage()
 
         viewModel.moviePage.observe(viewLifecycleOwner){ page ->
-            val movies: List<Movie> = page.movies
+            if(page.totalResult > 0){
+                val movieAdapter = MovieAdapter(page.movies)
+                binding.recyclerView.adapter = movieAdapter
+            }
         }
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        _binding = null
     }
 }
