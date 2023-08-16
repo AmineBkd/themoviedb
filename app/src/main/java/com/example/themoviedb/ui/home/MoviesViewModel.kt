@@ -1,18 +1,18 @@
 package com.example.themoviedb.ui.home
 
 
-import android.graphics.Bitmap
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.themoviedb.data.Image
 import com.example.themoviedb.data.Page
 import com.example.themoviedb.data.repository.MovieImageRepository
 import com.example.themoviedb.data.repository.MovieRepository
 import kotlinx.coroutines.launch
 
 class MoviesViewModel : ViewModel() {
-    private val _moviePage = MutableLiveData< Pair<Page, List<Bitmap>> >()
+    private val _moviePage = MutableLiveData< Pair<Page, List<Image>> >()
     val moviePage = _moviePage
 
     private var movieRepository: MovieRepository = MovieRepository()

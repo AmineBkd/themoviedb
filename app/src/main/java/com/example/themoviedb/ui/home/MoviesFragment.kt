@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.example.themoviedb.data.Image
 import com.example.themoviedb.data.Movie
 import com.example.themoviedb.databinding.FragmentMoviesBinding
 import com.example.themoviedb.ui.home.adapter.MovieAdapter
@@ -23,7 +24,7 @@ class MoviesFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentMoviesBinding.inflate(inflater, container, false)
-        binding.recyclerView.adapter = MovieAdapter(listOf<Movie>(), listOf<Bitmap>())
+        binding.recyclerView.adapter = MovieAdapter(listOf<Movie>(), listOf<Image>())
         binding.viewModel = viewModel
 
         return binding.root
@@ -31,7 +32,7 @@ class MoviesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.loadPage(2)
+        viewModel.loadPage(1)
 
         viewModel.moviePage.observe(viewLifecycleOwner){ (page, image) ->
             if(page.totalResult > 0){

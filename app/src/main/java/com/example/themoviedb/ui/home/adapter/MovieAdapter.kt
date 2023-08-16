@@ -9,6 +9,7 @@ import android.widget.ImageView
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.themoviedb.R
+import com.example.themoviedb.data.Image
 import com.example.themoviedb.data.Movie
 import com.example.themoviedb.databinding.ItemMovieBinding
 import com.google.android.material.card.MaterialCardView
@@ -16,7 +17,7 @@ import java.lang.Exception
 
 class MovieAdapter(
     private val movieList: List<Movie>,
-    private val imageList: List<Bitmap>
+    private val imageList: List<Image>
 ) : RecyclerView.Adapter<MovieAdapter.MovieViewHolder>(){
     lateinit var cardListener: ((Movie) -> Unit)
 
@@ -43,26 +44,28 @@ class MovieAdapter(
         val movie = movieList[position]
         val cardView = holder.itemView.findViewById<MaterialCardView>(R.id.cardView)
 
+        Log.d("DEBUG", "currentPosition: $position,imageCount: ${imageList.count()} ,movieCount: ${movieList.count()}")
+
+        loadImages(movie.id, holder.itemView.findViewById(R.id.movieImage), position)
         cardView.setOnClickListener {
             cardListener(movie)
         }
 
         holder.bind(movie)
-        loadingImages(holder.itemView.findViewById(R.id.movieImage), position)
     }
 
     override fun getItemCount(): Int = movieList.count()
 
-    private fun loadingImages(imageView:ImageView, position:Int){
-        try {
+    private fun loadImages(movieId: Int, imageView:ImageView, position:Int){
+        try{
             val movieImageView: ImageView = imageView
-            val bitmap = imageList[position]
+            val image = imageList[position]
+
             movieImageView.setImageDrawable(
-                BitmapDrawable(movieImageView.resources, bitmap)
+                BitmapDrawable(movieImageView.resources, image.bitmapImage)
             )
         }catch (e: Exception){
-            //silent error-handler
-            Log.d("Crash", e.message.toString())
+            Log.e("Bitmap Error", "loadImages ${e.message}", )
         }
     }
 }
