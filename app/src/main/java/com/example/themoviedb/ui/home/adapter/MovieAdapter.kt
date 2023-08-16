@@ -1,24 +1,25 @@
-package com.example.themoviedb.ui.movies.adapter
+package com.example.themoviedb.ui.home.adapter
 
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
-import android.graphics.drawable.Drawable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.ImageView
-import androidx.core.view.allViews
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.example.themoviedb.R
 import com.example.themoviedb.data.Movie
 import com.example.themoviedb.databinding.ItemMovieBinding
+import com.google.android.material.card.MaterialCardView
 import java.lang.Exception
 
 class MovieAdapter(
     private val movieList: List<Movie>,
     private val imageList: List<Bitmap>
 ) : RecyclerView.Adapter<MovieAdapter.MovieViewHolder>(){
+    lateinit var cardListener: ((Movie) -> Unit)
+
     class MovieViewHolder(private val binding: ItemMovieBinding) :
         RecyclerView.ViewHolder(binding.root) {
         fun bind(movie: Movie) {
@@ -40,18 +41,28 @@ class MovieAdapter(
 
     override fun onBindViewHolder(holder: MovieAdapter.MovieViewHolder, position: Int) {
         val movie = movieList[position]
-        holder.bind(movie)
+        val cardView = holder.itemView.findViewById<MaterialCardView>(R.id.cardView)
 
+        cardView.setOnClickListener {
+            cardListener(movie)
+        }
+
+        holder.bind(movie)
+        loadingImages(holder.itemView.findViewById(R.id.movieImage), position)
+    }
+
+    override fun getItemCount(): Int = movieList.count()
+
+    private fun loadingImages(imageView:ImageView, position:Int){
         try {
-            val movieImageView: ImageView = holder.itemView.findViewById<ImageView>(R.id.movieImage)
+            val movieImageView: ImageView = imageView
             val bitmap = imageList[position]
             movieImageView.setImageDrawable(
                 BitmapDrawable(movieImageView.resources, bitmap)
             )
         }catch (e: Exception){
+            //silent error-handler
             Log.d("Crash", e.message.toString())
         }
     }
-
-    override fun getItemCount(): Int = movieList.count()
 }

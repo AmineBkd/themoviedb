@@ -6,13 +6,13 @@
     <data>
         <variable
                 name="viewModel"
-                type="com.example.themoviedb.ui.movies.MoviesViewModel" />
+                type="com.example.themoviedb.ui.home.MoviesViewModel" />
     </data>
 
     <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.movies.MoviesFragment">
+        tools:context=".ui.home.MoviesFragment">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/recyclerView"

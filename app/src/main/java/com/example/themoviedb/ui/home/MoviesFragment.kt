@@ -1,4 +1,4 @@
-package com.example.themoviedb.ui.movies
+package com.example.themoviedb.ui.home
 
 import android.graphics.Bitmap
 import android.os.Bundle
@@ -7,9 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import com.example.themoviedb.data.Movie
 import com.example.themoviedb.databinding.FragmentMoviesBinding
-import com.example.themoviedb.ui.movies.adapter.MovieAdapter
+import com.example.themoviedb.ui.home.adapter.MovieAdapter
 
 class MoviesFragment : Fragment() {
     private var _binding: FragmentMoviesBinding? = null
@@ -36,6 +37,14 @@ class MoviesFragment : Fragment() {
             if(page.totalResult > 0){
                 val movieAdapter = MovieAdapter(page.movies, image)
                 binding.recyclerView.adapter = movieAdapter
+
+                movieAdapter.cardListener = { movie->
+                    val action =
+                        MoviesFragmentDirections.actionMoviesFragmentToMovieDetailsFragment(
+                            movie
+                        )
+                    findNavController().navigate(action)
+                }
             }
         }
     }

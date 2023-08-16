@@ -1,12 +1,10 @@
 package com.example.themoviedb.data.network
 
-import okhttp3.Call
 import okhttp3.ResponseBody
 import retrofit2.Retrofit
 import retrofit2.converter.scalars.ScalarsConverterFactory
 import retrofit2.http.GET
 import retrofit2.http.Path
-import retrofit2.http.Url
 
 private const val BASE_URL = "https://image.tmdb.org/t/p/w500/"
 
