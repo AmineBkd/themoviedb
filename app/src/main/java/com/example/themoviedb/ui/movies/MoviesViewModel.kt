@@ -1,4 +1,4 @@
-package com.example.themoviedb.ui.movieslist
+package com.example.themoviedb.ui.movies
 
 
 import android.util.Log

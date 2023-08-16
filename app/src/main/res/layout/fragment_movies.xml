@@ -3,19 +3,18 @@
     <data>
         <variable
                 name="viewModel"
-                type="com.example.themoviedb.ui.movieslist.MoviesViewModel" />
+                type="com.example.themoviedb.ui.movies.MoviesViewModel" />
     </data>
 
     <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".ui.movieslist.MoviesFragment">
-
-        <TextView android:id="@+id/debugTextView"
+        tools:context=".ui.movies.MoviesFragment">
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recyclerView"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="@string/hello_blank_fragment" />
+            android:layout_height="match_parent" />
 
     </FrameLayout>
 </layout>

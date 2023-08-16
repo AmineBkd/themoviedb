@@ -1,4 +1,4 @@
-package com.example.themoviedb.ui.movieslist
+package com.example.themoviedb.ui.movies
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
-import com.example.themoviedb.R
 import com.example.themoviedb.data.Movie
 import com.example.themoviedb.databinding.FragmentMoviesBinding
 
@@ -31,8 +30,6 @@ class MoviesFragment : Fragment() {
 
         viewModel.moviePage.observe(viewLifecycleOwner){ page ->
             val movies: List<Movie> = page.movies
-
-            binding.debugTextView.text = movies.toString()
         }
     }
 }
