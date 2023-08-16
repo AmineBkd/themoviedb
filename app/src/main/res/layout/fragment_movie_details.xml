@@ -13,7 +13,7 @@
             <ImageView
                 android:id="@+id/detailsMovieImageView"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="400dp"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
@@ -40,13 +40,12 @@
                     android:textStyle="bold"
                     tools:text="Welcome to Demon School" />
                 <TextView
-                    android:gravity="clip_vertical"
                     android:layout_marginTop="10dp"
                     android:layout_marginLeft="7dp"
                     android:layout_marginRight="7dp"
                     android:id="@+id/movieDescription"
                     android:layout_width="match_parent"
-                    android:layout_gravity="center"
+                    android:gravity="center"
                     android:layout_height="wrap_content"
                     tools:text="@tools:sample/lorem/random"/>
             </LinearLayout>

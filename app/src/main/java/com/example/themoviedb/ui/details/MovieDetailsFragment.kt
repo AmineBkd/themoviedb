@@ -38,6 +38,7 @@ class MovieDetailsFragment : Fragment() {
         binding.movieName.text = movie.name
         binding.movieDescription.text = movie.overview
         bindLoadImage()
+        fillEmpty()
     }
 
     private fun bindLoadImage(){
@@ -51,4 +52,9 @@ class MovieDetailsFragment : Fragment() {
             )
         }
     }
+
+    private fun fillEmpty() {
+        if(binding.movieDescription.text.isEmpty()) binding.movieDescription.text = "No Description"
+    }
+
 }
