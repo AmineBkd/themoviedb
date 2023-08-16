@@ -39,10 +39,10 @@ class MoviesFragment : Fragment() {
                 val movieAdapter = MovieAdapter(page.movies, image)
                 binding.recyclerView.adapter = movieAdapter
 
-                movieAdapter.cardListener = { movie->
+                movieAdapter.cardListener = { movie, movieImage ->
                     val action =
                         MoviesFragmentDirections.actionMoviesFragmentToMovieDetailsFragment(
-                            movie
+                            movie, movieImage
                         )
                     findNavController().navigate(action)
                 }

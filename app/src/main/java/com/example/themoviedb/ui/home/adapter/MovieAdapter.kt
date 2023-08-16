@@ -20,7 +20,7 @@ class MovieAdapter(
     private val movieList: List<Movie>,
     private val imageList: List<Image>
 ) : RecyclerView.Adapter<MovieAdapter.MovieViewHolder>(){
-    lateinit var cardListener: ((Movie) -> Unit)
+    lateinit var cardListener: ((Movie, Image) -> Unit)
 
     class MovieViewHolder(private val binding: ItemMovieBinding) :
         RecyclerView.ViewHolder(binding.root) {
@@ -47,9 +47,9 @@ class MovieAdapter(
 
         Log.d("DEBUG", "currentPosition: $position,imageCount: ${imageList.count()} ,movieCount: ${movieList.count()}")
 
-        loadImages(movie.id, holder.itemView.findViewById(R.id.movieImage), position)
+        loadImages(holder.itemView.findViewById(R.id.movieImage), position)
         cardView.setOnClickListener {
-            cardListener(movie)
+            cardListener(movie, imageList[position])
         }
 
         holder.bind(movie)
@@ -57,7 +57,7 @@ class MovieAdapter(
 
     override fun getItemCount(): Int = movieList.count()
 
-    private fun loadImages(movieId: Int, imageView:ImageView, position:Int){
+    private fun loadImages(imageView:ImageView, position:Int){
         try{
             val movieImageView: ImageView = imageView
             val image = imageList[position]

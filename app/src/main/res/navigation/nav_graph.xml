@@ -22,6 +22,9 @@
         <argument
             android:name="movie"
             app:argType="com.example.themoviedb.data.Movie" />
+        <argument
+            android:name="image"
+            app:argType="com.example.themoviedb.data.Image" />
     </fragment>
 
 </navigation>
