@@ -2,4 +2,7 @@
     <string name="app_name">themoviedb</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="movieimage">movieImage</string>
+    <string name="star_rating">star rating</string>
+    <string name="people_that_rated_the_movie">People that rated the movie</string>
 </resources>
