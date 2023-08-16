@@ -20,7 +20,7 @@ private val retrofit = Retrofit.Builder()
     .baseUrl(BASE_URL)
     .build()
 
-interface MoviesApiService {
+interface MovieApiService {
     @GET("tv")
     suspend fun getPage(
         @Query("page") page: Int = 1,
@@ -31,5 +31,5 @@ interface MoviesApiService {
 }
 
 class MovieApi {
-    val retrofitService: MoviesApiService by lazy { retrofit.create(MoviesApiService::class.java) }
+    val retrofitService: MovieApiService by lazy { retrofit.create(MovieApiService::class.java) }
 }

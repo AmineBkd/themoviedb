@@ -8,6 +8,6 @@
     <fragment
         android:id="@+id/moviesFragment"
         android:name="com.example.themoviedb.ui.movies.MoviesFragment"
-        android:label="Movies Details"
+        android:label="Movies: Comedy"
         tools:layout="@layout/fragment_movies" />
 </navigation>

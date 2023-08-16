@@ -1,11 +1,11 @@
 package com.example.themoviedb.ui.movies
 
+import android.graphics.Bitmap
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import com.example.themoviedb.data.Movie
 import com.example.themoviedb.databinding.FragmentMoviesBinding
@@ -22,7 +22,7 @@ class MoviesFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentMoviesBinding.inflate(inflater, container, false)
-        binding.recyclerView.adapter = MovieAdapter(listOf<Movie>())
+        binding.recyclerView.adapter = MovieAdapter(listOf<Movie>(), listOf<Bitmap>())
         binding.viewModel = viewModel
 
         return binding.root
@@ -32,9 +32,9 @@ class MoviesFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         viewModel.loadPage()
 
-        viewModel.moviePage.observe(viewLifecycleOwner){ page ->
+        viewModel.moviePage.observe(viewLifecycleOwner){ (page, image) ->
             if(page.totalResult > 0){
-                val movieAdapter = MovieAdapter(page.movies)
+                val movieAdapter = MovieAdapter(page.movies, image)
                 binding.recyclerView.adapter = movieAdapter
             }
         }

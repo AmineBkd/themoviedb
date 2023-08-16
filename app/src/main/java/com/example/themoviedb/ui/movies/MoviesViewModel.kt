@@ -1,27 +1,35 @@
 package com.example.themoviedb.ui.movies
 
 
+import android.graphics.Bitmap
 import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.example.themoviedb.MainActivity
+import com.example.themoviedb.data.Movie
 import com.example.themoviedb.data.Page
+import com.example.themoviedb.data.datasource.MovieDataSource
 import com.example.themoviedb.data.network.MovieApi
+import com.example.themoviedb.data.repository.MovieImageRepository
+import com.example.themoviedb.data.repository.MovieRepository
 import kotlinx.coroutines.launch
 
 class MoviesViewModel : ViewModel() {
+    private val _moviePage = MutableLiveData<Pair<Page, List<Bitmap>>>()
+    val moviePage = _moviePage
 
-    private val _moviePage = MutableLiveData<Page>()
-    val moviePage: LiveData<Page> = _moviePage
+    private var movieRepository: MovieRepository = MovieRepository()
+    private var movieImageRepository: MovieImageRepository = MovieImageRepository()
 
     fun loadPage(pageNumber: Int = 1){
         viewModelScope.launch {
             try {
-                val retrofit = MovieApi().retrofitService
-                val page = retrofit.getPage(pageNumber)
-                Log.d("GOOD", "loadMovies")
-                _moviePage.value = page
+                val page = movieRepository.getPage(pageNumber)
+                val movieImages = movieImageRepository.getImages(page.movies)
+
+                _moviePage.value = Pair(page, movieImages)
             }catch (e: Exception){
                 Log.d("RETROFIT", "Failure: ${e.message}")
             }
