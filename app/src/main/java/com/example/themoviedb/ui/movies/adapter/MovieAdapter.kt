@@ -39,6 +39,9 @@ class MovieAdapter(
     }
 
     override fun onBindViewHolder(holder: MovieAdapter.MovieViewHolder, position: Int) {
+        val movie = movieList[position]
+        holder.bind(movie)
+
         try {
             val movieImageView: ImageView = holder.itemView.findViewById<ImageView>(R.id.movieImage)
             val bitmap = imageList[position]
@@ -48,9 +51,6 @@ class MovieAdapter(
         }catch (e: Exception){
             Log.d("Crash", e.message.toString())
         }
-
-        val movie = movieList[position]
-        holder.bind(movie)
     }
 
     override fun getItemCount(): Int = movieList.count()
