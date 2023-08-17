@@ -17,8 +17,8 @@ class MoviesViewModel : ViewModel() {
     private val _loadingPage = MutableLiveData<Boolean>()
     val loadingPage = _loadingPage
 
-    private val _searchPage = MutableLiveData< Pair<Page, List<Image>> >()
-    val searchPage = _searchPage
+    private val _secondaryPage = MutableLiveData< Pair<Page, List<Image>> >()
+    val secondaryPage = _secondaryPage
 
     private val _moviePage = MutableLiveData< Pair<Page, List<Image>> >()
     val moviePage = _moviePage
@@ -65,9 +65,9 @@ class MoviesViewModel : ViewModel() {
                 Page(currentPage, movies, totalPages = maxPage, totalResult = it)
             })!!
 
-            _searchPage.value = Pair(page, images)
+            _secondaryPage.value = Pair(page, images)
         }else{
-            _searchPage.value = moviePage.value
+            _secondaryPage.value = moviePage.value
         }
     }
 
@@ -95,7 +95,7 @@ class MoviesViewModel : ViewModel() {
             Page(currentPage, movies, totalPages = maxPage, totalResult = it)
         })!!
 
-        _searchPage.value = Pair(page, images)
+        _secondaryPage.value = Pair(page, images)
     }
 
 }

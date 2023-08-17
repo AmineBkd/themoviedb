@@ -51,7 +51,7 @@ class MoviesFragment : Fragment() {
             }
         }
 
-        viewModel.searchPage.observe(viewLifecycleOwner){ (page, image) ->
+        viewModel.secondaryPage.observe(viewLifecycleOwner){ (page, image) ->
             loadingPageUI(page.movies, image)
         }
 
@@ -85,7 +85,7 @@ class MoviesFragment : Fragment() {
         _binding = null
     }
 
-    private fun paginationUI(){
+    private fun pagination(){
         var isPreviousButtonClickable = false
         var isNextButtonClickable = false
 
@@ -113,10 +113,10 @@ class MoviesFragment : Fragment() {
         }
     }
 
-    fun loadingPageUI(movies: List<Movie>, images:List<Image>){
+    private fun loadingPageUI(movies: List<Movie>, images:List<Image>){
         val movieAdapter = MovieAdapter(movies, images)
         binding.recyclerView.adapter = movieAdapter
-        paginationUI()
+        pagination()
 
         movieAdapter.cardListener = { movie, movieImage ->
             val action =
@@ -127,7 +127,7 @@ class MoviesFragment : Fragment() {
         }
     }
 
-    fun clearInputs(){
+    private fun clearInputs(){
         binding.searchField.editText?.editableText?.clear()
         binding.menuAutocomplete.text = null
         binding.menuAutocomplete.clearFocus()
