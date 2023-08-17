@@ -20,8 +20,8 @@ class MoviesViewModel : ViewModel() {
     private val _secondaryPage = MutableLiveData< Pair<Page, List<Image>> >()
     val secondaryPage = _secondaryPage
 
-    private val _moviePage = MutableLiveData< Pair<Page, List<Image>> >()
-    val moviePage = _moviePage
+    private val _mainPage = MutableLiveData< Pair<Page, List<Image>> >()
+    val mainPage = _mainPage
 
     private var movieRepository: MovieRepository = MovieRepository()
     private var movieImageRepository: MovieImageRepository = MovieImageRepository()
@@ -41,7 +41,7 @@ class MoviesViewModel : ViewModel() {
                     currentPage = pageNumber
                     maxPage = page.totalPages
 
-                    _moviePage.value = Pair(page, movieImages)
+                    _mainPage.value = Pair(page, movieImages)
                     loadingPage.value = false
                 }catch (e: Exception){
                     Log.d("RETROFIT", "Failure: ${e.message}")
@@ -52,22 +52,22 @@ class MoviesViewModel : ViewModel() {
 
     fun searchMovie() {
         if(searchValue.isNotEmpty()){
-            val movies = moviePage.value?.first?.movies?.filter {
+            val movies = mainPage.value?.first?.movies?.filter {
                 it.name.contains(searchValue, ignoreCase = true)
             }
             val movieIds = (movies?.map { it.id })!!
 
-            val images: List<Image> = (moviePage.value?.second?.filter {
+            val images: List<Image> = (mainPage.value?.second?.filter {
                 it.movieId in movieIds
             })!!
 
-            val page: Page = (moviePage.value?.first?.totalResult?.let {
+            val page: Page = (mainPage.value?.first?.totalResult?.let {
                 Page(currentPage, movies, totalPages = maxPage, totalResult = it)
             })!!
 
             _secondaryPage.value = Pair(page, images)
         }else{
-            _secondaryPage.value = moviePage.value
+            _secondaryPage.value = mainPage.value
         }
     }
 
@@ -78,20 +78,20 @@ class MoviesViewModel : ViewModel() {
         when(sortingType){
             availableSorts.getItem(0) -> {
                 //Alphabetical
-                movies = moviePage.value?.first?.movies?.sortedBy { it.name }!!
-                images = (moviePage.value?.second?.sortedBy { it.movieName }!!)
+                movies = mainPage.value?.first?.movies?.sortedBy { it.name }!!
+                images = (mainPage.value?.second?.sortedBy { it.movieName }!!)
             }
             availableSorts.getItem(1) -> {
                 //Date
-                movies = moviePage.value?.first?.movies?.sortedBy { it.firstAiringDate }!!
+                movies = mainPage.value?.first?.movies?.sortedBy { it.firstAiringDate }!!
                 val movieIndexMap = movies.mapIndexed { index, movie ->
                     movie.id to index
                 }.toMap()
-                images = (moviePage.value?.second?.sortedBy { movieIndexMap[it.movieId] }!!)
+                images = (mainPage.value?.second?.sortedBy { movieIndexMap[it.movieId] }!!)
             }
         }
 
-        val page: Page = (moviePage.value?.first?.totalResult?.let {
+        val page: Page = (mainPage.value?.first?.totalResult?.let {
             Page(currentPage, movies, totalPages = maxPage, totalResult = it)
         })!!
 

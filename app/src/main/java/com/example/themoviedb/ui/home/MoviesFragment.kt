@@ -38,7 +38,7 @@ class MoviesFragment : Fragment() {
 
         if(viewModel.searchValue.isEmpty()) viewModel.loadPage(viewModel.currentPage)
 
-        viewModel.moviePage.observe(viewLifecycleOwner){ (page, image) ->
+        viewModel.mainPage.observe(viewLifecycleOwner){ (page, image) ->
             if(page.totalResult > 0){
                 loadingPageUI(page.movies, image)
             }
