@@ -8,21 +8,79 @@
                 name="viewModel"
                 type="com.example.themoviedb.ui.home.MoviesViewModel" />
     </data>
-
-    <FrameLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:context=".ui.home.MoviesFragment">
+        android:layout_height="match_parent">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/recyclerView"
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:clickable="true"
-            android:focusable="true"
-            android:scrollbars="vertical"
-            app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-            app:spanCount="2"/>
+            android:background="@color/black"
+            android:id="@+id/loadingOverlay"
+            android:alpha="0.5"
+            android:translationZ="1dp"
+            android:visibility="gone">
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"/>
+        </FrameLayout>
 
-    </FrameLayout>
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:context=".ui.home.MoviesFragment">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:clickable="true"
+                    android:focusable="true"
+                    android:scrollbars="vertical"
+                    app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    app:spanCount="2"/>
+
+                <LinearLayout
+                    android:id="@+id/paginationView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintTop_toBottomOf="@id/recyclerView"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent"
+                    tools:visibility="visible"
+                    android:visibility="gone"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+                    <Button
+                        android:id="@+id/paginationPreviousButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:clickable="true"
+                        android:drawableLeft="@drawable/baseline_arrow_left_24"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton" />
+                    <TextView
+                        android:id="@+id/paginationCurrentPageTextView"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="18sp"
+                        android:layout_marginLeft="10dp"
+                        android:layout_marginRight="10dp"
+                        tools:text="0"/>
+                    <Button
+                        android:id="@+id/paginationNextButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="50dp"
+                        android:drawableEnd="@drawable/baseline_arrow_right_24"
+                        style="@style/Widget.MaterialComponents.Button.OutlinedButton"/>
+                </LinearLayout>
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.core.widget.NestedScrollView>
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

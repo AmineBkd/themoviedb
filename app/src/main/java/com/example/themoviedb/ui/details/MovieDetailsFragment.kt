@@ -57,4 +57,8 @@ class MovieDetailsFragment : Fragment() {
         if(binding.movieDescription.text.isEmpty()) binding.movieDescription.text = "No Description"
     }
 
+    override fun onDestroy() {
+        super.onDestroy()
+        _binding = null
+    }
 }

@@ -1,6 +1,5 @@
 package com.example.themoviedb.ui.home
 
-import android.graphics.Bitmap
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -32,12 +31,14 @@ class MoviesFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        viewModel.loadPage(1)
+
+        viewModel.loadPage(viewModel.currentPage)
 
         viewModel.moviePage.observe(viewLifecycleOwner){ (page, image) ->
             if(page.totalResult > 0){
                 val movieAdapter = MovieAdapter(page.movies, image)
                 binding.recyclerView.adapter = movieAdapter
+                paginationUI()
 
                 movieAdapter.cardListener = { movie, movieImage ->
                     val action =
@@ -48,10 +49,39 @@ class MoviesFragment : Fragment() {
                 }
             }
         }
+
+        viewModel.loadingPage.observe(viewLifecycleOwner){ loading ->
+            when(loading){
+                true -> binding.loadingOverlay.visibility = View.VISIBLE
+                false -> binding.loadingOverlay.visibility = View.GONE
+            }
+        }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun paginationUI(){
+        var isPreviousButtonClickable = false
+        var isNextButtonClickable = false
+
+        binding.paginationView.visibility = View.VISIBLE
+        binding.paginationCurrentPageTextView.text = viewModel.currentPage.toString()
+
+        if(viewModel.currentPage > 0) isPreviousButtonClickable = true
+        if(viewModel.currentPage < viewModel.maxPage) isNextButtonClickable = true
+
+        binding.paginationPreviousButton.isClickable = isPreviousButtonClickable
+        binding.paginationNextButton.isClickable = isNextButtonClickable
+
+        binding.paginationPreviousButton.setOnClickListener {
+            if(it.isClickable) viewModel.loadPage(viewModel.currentPage - 1)
+        }
+
+        binding.paginationNextButton.setOnClickListener {
+            if(it.isClickable) viewModel.loadPage(viewModel.currentPage + 1)
+        }
     }
 }
