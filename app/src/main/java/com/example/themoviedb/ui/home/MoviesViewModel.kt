@@ -6,7 +6,6 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.themoviedb.data.Image
-import com.example.themoviedb.data.Movie
 import com.example.themoviedb.data.Page
 import com.example.themoviedb.data.repository.MovieImageRepository
 import com.example.themoviedb.data.repository.MovieRepository
@@ -27,6 +26,7 @@ class MoviesViewModel : ViewModel() {
 
     var currentPage: Int = 1
     var maxPage: Int = 2
+    var searchValue: String = ""
 
     fun loadPage(pageNumber: Int = 1){
         if( (pageNumber > 0) and (pageNumber < maxPage) ){
@@ -48,7 +48,7 @@ class MoviesViewModel : ViewModel() {
         }
     }
 
-    fun searchMovie(searchValue: String){
+    fun searchMovie() {
         if(searchValue.isNotEmpty()){
             val movies = moviePage.value?.first?.movies?.filter {
                 it.name.contains(searchValue, ignoreCase = true)

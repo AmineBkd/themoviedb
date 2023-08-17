@@ -1,6 +1,7 @@
 package com.example.themoviedb.ui.home
 
 import android.os.Bundle
+import android.text.Editable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,6 +27,7 @@ class MoviesFragment : Fragment() {
         _binding = FragmentMoviesBinding.inflate(inflater, container, false)
         binding.recyclerView.adapter = MovieAdapter(listOf<Movie>(), listOf<Image>())
         binding.viewModel = viewModel
+        binding.searchField.editText?.setText(viewModel.searchValue)
 
         return binding.root
     }
@@ -33,7 +35,7 @@ class MoviesFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.loadPage(viewModel.currentPage)
+        if(viewModel.searchValue.isEmpty()) viewModel.loadPage(viewModel.currentPage)
 
         viewModel.moviePage.observe(viewLifecycleOwner){ (page, image) ->
             if(page.totalResult > 0){
@@ -53,7 +55,8 @@ class MoviesFragment : Fragment() {
         }
 
         binding.searchField.editText?.doOnTextChanged { text, _, _, _ ->
-            viewModel.searchMovie(text.toString())
+            viewModel.searchValue = text.toString()
+            viewModel.searchMovie()
         }
     }
 
