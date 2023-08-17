@@ -2,10 +2,12 @@ package com.example.themoviedb.ui.home
 
 
 import android.util.Log
+import android.widget.ArrayAdapter
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.themoviedb.data.Image
+import com.example.themoviedb.data.Movie
 import com.example.themoviedb.data.Page
 import com.example.themoviedb.data.repository.MovieImageRepository
 import com.example.themoviedb.data.repository.MovieRepository
@@ -54,19 +56,46 @@ class MoviesViewModel : ViewModel() {
                 it.name.contains(searchValue, ignoreCase = true)
             }
             val movieIds = (movies?.map { it.id })!!
+
             val images: List<Image> = (moviePage.value?.second?.filter {
                 it.movieId in movieIds
             })!!
 
-            val page = (
-                    moviePage.value?.first?.totalResult?.let {
-                        Page(currentPage, movies, totalPages = maxPage, totalResult = it)
-                    })!!
+            val page: Page = (moviePage.value?.first?.totalResult?.let {
+                Page(currentPage, movies, totalPages = maxPage, totalResult = it)
+            })!!
 
             _searchPage.value = Pair(page, images)
         }else{
             _searchPage.value = moviePage.value
         }
+    }
+
+    fun sortMovie(sortingType: String, availableSorts: ArrayAdapter<CharSequence>){
+        var movies: List<Movie> = listOf<Movie>()
+        var images: List<Image> = listOf<Image>()
+
+        when(sortingType){
+            availableSorts.getItem(0) -> {
+                //Alphabetical
+                movies = moviePage.value?.first?.movies?.sortedBy { it.name }!!
+                images = (moviePage.value?.second?.sortedBy { it.movieName }!!)
+            }
+            availableSorts.getItem(1) -> {
+                //Date
+                movies = moviePage.value?.first?.movies?.sortedBy { it.firstAiringDate }!!
+                val movieIndexMap = movies.mapIndexed { index, movie ->
+                    movie.id to index
+                }.toMap()
+                images = (moviePage.value?.second?.sortedBy { movieIndexMap[it.movieId] }!!)
+            }
+        }
+
+        val page: Page = (moviePage.value?.first?.totalResult?.let {
+            Page(currentPage, movies, totalPages = maxPage, totalResult = it)
+        })!!
+
+        _searchPage.value = Pair(page, images)
     }
 
 }

@@ -1,14 +1,15 @@
 package com.example.themoviedb.ui.home
 
 import android.os.Bundle
-import android.text.Editable
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ArrayAdapter
 import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
+import com.example.themoviedb.R
 import com.example.themoviedb.data.Image
 import com.example.themoviedb.data.Movie
 import com.example.themoviedb.databinding.FragmentMoviesBinding
@@ -58,6 +59,25 @@ class MoviesFragment : Fragment() {
             viewModel.searchValue = text.toString()
             viewModel.searchMovie()
         }
+
+        binding.menuAutocomplete.setAdapter(
+            ArrayAdapter.createFromResource(
+                requireContext(),
+                R.array.sorting,
+                android.R.layout.simple_dropdown_item_1line,
+            )
+        )
+
+        binding.menuAutocomplete.setOnItemClickListener { _, _, position, _ ->
+            val sortingType = binding.menuAutocomplete.adapter.getItem(position).toString()
+            val availableSortTypes = ArrayAdapter.createFromResource(
+                requireContext(),
+                R.array.sorting,
+                android.R.layout.simple_dropdown_item_1line,
+            )
+
+            viewModel.sortMovie(sortingType, availableSortTypes)
+        }
     }
 
     override fun onDestroyView() {
@@ -79,13 +99,17 @@ class MoviesFragment : Fragment() {
         binding.paginationNextButton.isClickable = isNextButtonClickable
 
         binding.paginationPreviousButton.setOnClickListener {
-            if(it.isClickable) viewModel.loadPage(viewModel.currentPage - 1)
-            binding.searchField.editText?.editableText?.clear()
+            if(it.isClickable){
+                clearInputs()
+                viewModel.loadPage(viewModel.currentPage - 1)
+            }
         }
 
         binding.paginationNextButton.setOnClickListener {
-            if(it.isClickable) viewModel.loadPage(viewModel.currentPage + 1)
-            binding.searchField.editText?.editableText?.clear()
+            if(it.isClickable) {
+                clearInputs()
+                viewModel.loadPage(viewModel.currentPage + 1)
+            }
         }
     }
 
@@ -101,5 +125,10 @@ class MoviesFragment : Fragment() {
                 )
             findNavController().navigate(action)
         }
+    }
+
+    fun clearInputs(){
+        binding.searchField.editText?.editableText?.clear()
+        binding.menuAutocomplete.clearFocus()
     }
 }
