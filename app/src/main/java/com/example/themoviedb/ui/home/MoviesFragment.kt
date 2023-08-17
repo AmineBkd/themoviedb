@@ -129,6 +129,7 @@ class MoviesFragment : Fragment() {
 
     fun clearInputs(){
         binding.searchField.editText?.editableText?.clear()
+        binding.menuAutocomplete.text = null
         binding.menuAutocomplete.clearFocus()
     }
 }
