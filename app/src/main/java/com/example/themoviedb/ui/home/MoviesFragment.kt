@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.widget.doOnTextChanged
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -36,17 +37,7 @@ class MoviesFragment : Fragment() {
 
         viewModel.moviePage.observe(viewLifecycleOwner){ (page, image) ->
             if(page.totalResult > 0){
-                val movieAdapter = MovieAdapter(page.movies, image)
-                binding.recyclerView.adapter = movieAdapter
-                paginationUI()
-
-                movieAdapter.cardListener = { movie, movieImage ->
-                    val action =
-                        MoviesFragmentDirections.actionMoviesFragmentToMovieDetailsFragment(
-                            movie, movieImage
-                        )
-                    findNavController().navigate(action)
-                }
+                loadingPageUI(page.movies, image)
             }
         }
 
@@ -55,6 +46,14 @@ class MoviesFragment : Fragment() {
                 true -> binding.loadingOverlay.visibility = View.VISIBLE
                 false -> binding.loadingOverlay.visibility = View.GONE
             }
+        }
+
+        viewModel.searchPage.observe(viewLifecycleOwner){ (page, image) ->
+            loadingPageUI(page.movies, image)
+        }
+
+        binding.searchField.editText?.doOnTextChanged { text, _, _, _ ->
+            viewModel.searchMovie(text.toString())
         }
     }
 
@@ -78,10 +77,26 @@ class MoviesFragment : Fragment() {
 
         binding.paginationPreviousButton.setOnClickListener {
             if(it.isClickable) viewModel.loadPage(viewModel.currentPage - 1)
+            binding.searchField.editText?.editableText?.clear()
         }
 
         binding.paginationNextButton.setOnClickListener {
             if(it.isClickable) viewModel.loadPage(viewModel.currentPage + 1)
+            binding.searchField.editText?.editableText?.clear()
+        }
+    }
+
+    fun loadingPageUI(movies: List<Movie>, images:List<Image>){
+        val movieAdapter = MovieAdapter(movies, images)
+        binding.recyclerView.adapter = movieAdapter
+        paginationUI()
+
+        movieAdapter.cardListener = { movie, movieImage ->
+            val action =
+                MoviesFragmentDirections.actionMoviesFragmentToMovieDetailsFragment(
+                    movie, movieImage
+                )
+            findNavController().navigate(action)
         }
     }
 }

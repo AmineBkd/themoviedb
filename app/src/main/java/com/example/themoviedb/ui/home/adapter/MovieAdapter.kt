@@ -1,8 +1,6 @@
 package com.example.themoviedb.ui.home.adapter
 
-import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
-import android.graphics.drawable.Drawable
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.ViewGroup
@@ -14,7 +12,6 @@ import com.example.themoviedb.data.Image
 import com.example.themoviedb.data.Movie
 import com.example.themoviedb.databinding.ItemMovieBinding
 import com.google.android.material.card.MaterialCardView
-import java.lang.Exception
 
 class MovieAdapter(
     private val movieList: List<Movie>,
@@ -62,7 +59,7 @@ class MovieAdapter(
             val movieImageView: ImageView = imageView
             val image = imageList[position]
 
-            if(image.movieId == -1) {
+            if(image.path.isNullOrEmpty()) {
                 //placeHolder
                 movieImageView.setImageResource(R.drawable.missing_image)
             }else{

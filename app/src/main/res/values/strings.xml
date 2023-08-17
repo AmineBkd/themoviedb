@@ -5,4 +5,5 @@
     <string name="movieimage">movieImage</string>
     <string name="star_rating">star rating</string>
     <string name="people_that_rated_the_movie">People that rated the movie</string>
+    <string name="search">Search</string>
 </resources>
